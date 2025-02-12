@@ -71,7 +71,11 @@ const displayMovements = function (movements) {
         containerMovements.insertAdjacentHTML(`afterbegin`, html);
     });
 };
-displayMovements(account1.movements);
+
+const calcDisplayBalance = function (acc) {
+    const balance = acc.movements.reduce((acc, mov) => acc + mov);
+    labelBalance.textContent = `${balance} EUR`;
+};
 
 const createUsernames = function (accs) {
     accs.forEach((acc) => {
@@ -82,4 +86,7 @@ const createUsernames = function (accs) {
             .join(``);
     });
 };
+
 createUsernames(accounts);
+displayMovements(account1.movements);
+calcDisplayBalance(account1);
