@@ -87,6 +87,23 @@ const createUsernames = function (accs) {
     });
 };
 
+const calcDisplaySummary = function (acc) {
+    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income);
+    const outcomes = Math.abs(
+        acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome)
+    );
+    const interest = acc.movements
+        .filter((mov) => mov > 0)
+        .map((deposit) => (deposit * 1.2) / 100)
+        .filter((deposit) => deposit >= 1)
+        .reduce((acc, interest) => acc + interest);
+
+    labelSumIn.textContent = `${incomes}€`;
+    labelSumOut.textContent = `${outcomes}€`;
+    labelSumInterest.textContent = `${interest}€`;
+};
+
 createUsernames(accounts);
 displayMovements(account1.movements);
 calcDisplayBalance(account1);
+calcDisplaySummary(account1);
