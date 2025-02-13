@@ -57,6 +57,9 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+// Create usernames for all existing accounts
+createUsernames(accounts);
+
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
 const createUsernames = function (accs) {
     accs.forEach((acc) => {
@@ -67,11 +70,9 @@ const createUsernames = function (accs) {
             .join(``);
     });
 };
-// Create usernames for all existing accounts
-createUsernames(accounts);
 
 // Function for display movement for account according to movement type
-const displayMovements = function (acc) {
+function displayMovements(acc) {
     // Clear movements container
     containerMovements.innerHTML = ``;
     // Create div element for each movement according to type of movement and put it in movements container
@@ -85,18 +86,18 @@ const displayMovements = function (acc) {
     `;
         containerMovements.insertAdjacentHTML(`afterbegin`, html);
     });
-};
+}
 
 // Function for display balance for account according to movements
-const calcDisplayBalance = function (acc) {
+function calcDisplayBalance(acc) {
     // Calculate balance
     const balance = acc.movements.reduce((acc, mov) => acc + mov);
     // Display balance
     labelBalance.textContent = `${balance}€`;
-};
+}
 
 // Function to calculate summary income, outcome and interest for account according to movements
-const calcDisplaySummary = function (acc) {
+function calcDisplaySummary(acc) {
     // Calculate incomes
     const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income);
     // Calculate outcomes
@@ -115,4 +116,4 @@ const calcDisplaySummary = function (acc) {
     labelSumIn.textContent = `${incomes}€`;
     labelSumOut.textContent = `${outcomes}€`;
     labelSumInterest.textContent = `${interest}€`;
-};
+}
