@@ -60,8 +60,38 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // Create usernames for all existing accounts
 createUsernames(accounts);
 
+// Implementing login
+let currentAccount;
+btnLogin.addEventListener(`click`, function (e) {
+    // Prevent form from submitting and reload page
+    e.preventDefault();
+    // Finding account according to username input
+    currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
+    // Checking login and pin
+    if (currentAccount?.username && currentAccount?.pin === Number(inputLoginPin.value)) {
+        // If login and pin is correct
+        // Clear input fields
+        inputLoginUsername.value = inputLoginPin.value = ``;
+        // Reset pointer and focus
+        inputLoginPin.blur();
+        // Display UI and welcome message
+        labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(` `).at(0)}!`;
+        containerApp.style.opacity = 100;
+        // Display balance
+        calcDisplayBalance(currentAccount);
+        // Display movements
+        displayMovements(currentAccount);
+        // Display summary
+        calcDisplaySummary(currentAccount);
+    } else {
+        // If login and pin is incorrect
+        alert(`Incorrect login or password!`);
+        inputLoginUsername.value = inputLoginPin.value = ``;
+    }
+});
+
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
-const createUsernames = function (accs) {
+function createUsernames(accs) {
     accs.forEach((acc) => {
         acc.username = acc.owner
             .toLowerCase()
@@ -69,7 +99,7 @@ const createUsernames = function (accs) {
             .map((word) => word.at(0))
             .join(``);
     });
-};
+}
 
 // Function for display movement for account according to movement type
 function displayMovements(acc) {
@@ -81,7 +111,7 @@ function displayMovements(acc) {
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>
     `;
         containerMovements.insertAdjacentHTML(`afterbegin`, html);
