@@ -69,7 +69,7 @@ btnLogin.addEventListener(`click`, function (e) {
     currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
     // Checking login and pin
     if (currentAccount?.username && currentAccount?.pin === Number(inputLoginPin.value)) {
-        // Исправить логику
+        // ------------------------------------------------------------------------------------------------ Исправить логику
         // If login and pin is correct
         // Clear input fields
         inputLoginUsername.value = inputLoginPin.value = ``;
@@ -78,12 +78,7 @@ btnLogin.addEventListener(`click`, function (e) {
         // Display UI and welcome message
         labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(` `).at(0)}!`;
         containerApp.style.opacity = 100;
-        // Display balance
-        calcDisplayBalance(currentAccount);
-        // Display movements
-        displayMovements(currentAccount);
-        // Display summary
-        calcDisplaySummary(currentAccount);
+        updateUI(currentAccount);
     } else {
         // If login and pin is incorrect
         alert(`Incorrect login or password!`);
@@ -130,7 +125,7 @@ function calcDisplayBalance(acc) {
 // Function to calculate summary income, outcome and interest for account according to movements
 function calcDisplaySummary(acc) {
     // Calculate incomes
-    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0); // Исправить логику, если нет outcome и income
+    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0);
     // Calculate outcomes
     const outcomes = Math.abs(
         acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome, 0)
@@ -147,4 +142,14 @@ function calcDisplaySummary(acc) {
     labelSumIn.textContent = `${incomes}€`;
     labelSumOut.textContent = `${outcomes}€`;
     labelSumInterest.textContent = `${interest}€`;
+}
+
+// Updating UI function
+function updateUI(acc) {
+    // Calculate and display balance
+    calcDisplayBalance(currentAccount);
+    // Display movements
+    displayMovements(currentAccount);
+    // Calculate and display summary
+    calcDisplaySummary(currentAccount);
 }
