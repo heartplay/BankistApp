@@ -60,7 +60,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // Create usernames for all existing accounts
 createUsernames(accounts);
 
-// Implementing login
+// Log in to account
 let currentAccount;
 btnLogin.addEventListener(`click`, function (e) {
     // Prevent form from submitting and reload page
@@ -83,6 +83,33 @@ btnLogin.addEventListener(`click`, function (e) {
         // If login and pin is incorrect
         alert(`Incorrect login or password!`);
         inputLoginUsername.value = inputLoginPin.value = ``;
+    }
+});
+
+// Transfer
+btnTransfer.addEventListener(`click`, function (e) {
+    // Prevent form from submitting and reload page
+    e.preventDefault();
+    // Finding account of receiver
+    const receiver = accounts.find((acc) => acc.username === inputTransferTo.value);
+    const amount = Number(inputTransferAmount.value);
+    // Checking receiver account is exist, sender account is not receiver account, positive sum to transfer and amount did not exceed balance
+    if (
+        receiver &&
+        receiver.username !== currentAccount.username &&
+        amount > 0 &&
+        currentAccount.balance >= amount
+    ) {
+        // Valid transfer
+        // Add new movements on both accounts
+        currentAccount.movements.push(-amount);
+        receiver.movements.push(amount);
+        // Clear input fields and reset pointer and focus
+        inputTransferTo.value = inputTransferAmount.value = ``;
+        inputTransferTo.blur();
+        inputTransferAmount.blur();
+        // Display updated balance, movements and summary
+        updateUI(currentAccount);
     }
 });
 
@@ -117,9 +144,9 @@ function displayMovements(acc) {
 // Function for display balance for account according to movements
 function calcDisplayBalance(acc) {
     // Calculate balance
-    const balance = acc.movements.reduce((acc, mov) => acc + mov);
+    acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
     // Display balance
-    labelBalance.textContent = `${balance}€`;
+    labelBalance.textContent = `${acc.balance}€`;
 }
 
 // Function to calculate summary income, outcome and interest for account according to movements
