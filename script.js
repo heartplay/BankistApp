@@ -69,6 +69,7 @@ btnLogin.addEventListener(`click`, function (e) {
     currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
     // Checking login and pin
     if (currentAccount?.username && currentAccount?.pin === Number(inputLoginPin.value)) {
+        // Исправить логику
         // If login and pin is correct
         // Clear input fields
         inputLoginUsername.value = inputLoginPin.value = ``;
@@ -129,10 +130,10 @@ function calcDisplayBalance(acc) {
 // Function to calculate summary income, outcome and interest for account according to movements
 function calcDisplaySummary(acc) {
     // Calculate incomes
-    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income);
+    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0); // Исправить логику, если нет outcome и income
     // Calculate outcomes
     const outcomes = Math.abs(
-        acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome)
+        acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome, 0)
     );
     // Calculate interest
     const interest = acc.movements
@@ -140,7 +141,7 @@ function calcDisplaySummary(acc) {
         .map((deposit) => (deposit * acc.interestRate) / 100)
         // Condition for getting interest
         .filter((deposit) => deposit >= 1)
-        .reduce((acc, interest) => acc + interest);
+        .reduce((acc, interest) => acc + interest, 0);
 
     // Display income, outcome and interest
     labelSumIn.textContent = `${incomes}€`;
