@@ -105,12 +105,15 @@ btnTransfer.addEventListener(`click`, function (e) {
         currentAccount.movements.push(-amount);
         receiver.movements.push(amount);
         // Clear input fields and reset pointer and focus
-        inputTransferTo.value = inputTransferAmount.value = ``;
-        inputTransferTo.blur();
-        inputTransferAmount.blur();
-        // Display updated balance, movements and summary
+
+        // Display updated balance, movements and summary of current account
         updateUI(currentAccount);
+    } else {
+        alert(`Invalid operation!`);
     }
+    inputTransferTo.value = inputTransferAmount.value = ``;
+    inputTransferTo.blur();
+    inputTransferAmount.blur();
 });
 
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
