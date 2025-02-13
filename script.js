@@ -29,7 +29,14 @@ const account4 = {
     pin: 4444,
 };
 
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+    owner: "Il'ya Emel'yanov",
+    movements: [15000, 10000, -7000, 502, 905, -1250],
+    interestRate: 2,
+    pin: 1488,
+};
+
+const accounts = [account1, account2, account3, account4, account5];
 
 // Getting all elements in document
 const labelWelcome = document.querySelector('.welcome');
@@ -109,6 +116,7 @@ btnTransfer.addEventListener(`click`, function (e) {
         // Display updated balance, movements and summary of current account
         updateUI(currentAccount);
     } else {
+        // -------------------------------------------------------------------- Добавить уведомления для различных причин невыполнения операции
         alert(`Invalid operation!`);
     }
     inputTransferTo.value = inputTransferAmount.value = ``;
