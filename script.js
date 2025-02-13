@@ -1,6 +1,6 @@
 'use strict';
 
-// Data
+// Hardcoding data for app
 const account1 = {
     owner: 'Jonas Schmedtmann',
     movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -31,7 +31,7 @@ const account4 = {
 
 const accounts = [account1, account2, account3, account4];
 
-// Elements
+// Getting all elements in document
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
@@ -57,10 +57,25 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
-    containerMovements.innerHTML = ``;
+// Function to create username for account(username is first letters of each word of account.owner property in lower case)
+const createUsernames = function (accs) {
+    accs.forEach((acc) => {
+        acc.username = acc.owner
+            .toLowerCase()
+            .split(` `)
+            .map((word) => word.at(0))
+            .join(``);
+    });
+};
+// Create usernames for all existing accounts
+createUsernames(accounts);
 
-    movements.forEach((mov, i) => {
+// Function for display movement for account according to movement type
+const displayMovements = function (acc) {
+    // Clear movements container
+    containerMovements.innerHTML = ``;
+    // Create div element for each movement according to type of movement and put it in movements container
+    acc.movements.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
         const html = `
         <div class="movements__row">
@@ -72,38 +87,32 @@ const displayMovements = function (movements) {
     });
 };
 
+// Function for display balance for account according to movements
 const calcDisplayBalance = function (acc) {
+    // Calculate balance
     const balance = acc.movements.reduce((acc, mov) => acc + mov);
-    labelBalance.textContent = `${balance} EUR`;
+    // Display balance
+    labelBalance.textContent = `${balance}€`;
 };
 
-const createUsernames = function (accs) {
-    accs.forEach((acc) => {
-        acc.username = acc.owner
-            .toLowerCase()
-            .split(` `)
-            .map((word) => word.at(0))
-            .join(``);
-    });
-};
-
+// Function to calculate summary income, outcome and interest for account according to movements
 const calcDisplaySummary = function (acc) {
+    // Calculate incomes
     const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income);
+    // Calculate outcomes
     const outcomes = Math.abs(
         acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome)
     );
+    // Calculate interest
     const interest = acc.movements
         .filter((mov) => mov > 0)
-        .map((deposit) => (deposit * 1.2) / 100)
+        .map((deposit) => (deposit * acc.interestRate) / 100)
+        // Condition for getting interest
         .filter((deposit) => deposit >= 1)
         .reduce((acc, interest) => acc + interest);
 
+    // Display income, outcome and interest
     labelSumIn.textContent = `${incomes}€`;
     labelSumOut.textContent = `${outcomes}€`;
     labelSumInterest.textContent = `${interest}€`;
 };
-
-createUsernames(accounts);
-displayMovements(account1.movements);
-calcDisplayBalance(account1);
-calcDisplaySummary(account1);
