@@ -36,7 +36,28 @@ const account5 = {
     pin: 1488,
 };
 
-const accounts = [account1, account2, account3, account4, account5];
+const account6 = {
+    owner: 'Olya Skryabina',
+    movements: [1000, 9520, 1000, -5267, -55, -1250],
+    interestRate: 1.7,
+    pin: 5555,
+};
+
+const account7 = {
+    owner: 'Buket Arturov',
+    movements: [200000, 200000, -36, -1234, 200000],
+    interestRate: 2,
+    pin: 6666,
+};
+
+const account8 = {
+    owner: 'Gleb Fedoseev',
+    movements: [200, -179],
+    interestRate: 0,
+    pin: 1337,
+};
+
+const accounts = [account1, account2, account3, account4, account5, account6, account7, account8];
 
 // Getting all elements in document
 const labelWelcome = document.querySelector('.welcome');
