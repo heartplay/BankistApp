@@ -99,10 +99,6 @@ btnLogin.addEventListener(`click`, function (e) {
     if (currentAccount?.username && currentAccount?.pin === Number(inputLoginPin.value)) {
         // ------------------------------------------------------------------------------------------------ Исправить логику
         // If login and pin is correct
-        // Clear input fields
-        inputLoginUsername.value = inputLoginPin.value = ``;
-        // Reset pointer and focus
-        inputLoginPin.blur();
         // Display UI and welcome message
         labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(` `).at(0)}!`;
         containerApp.style.opacity = 100;
@@ -112,6 +108,10 @@ btnLogin.addEventListener(`click`, function (e) {
         alert(`Incorrect login or password!`);
         inputLoginUsername.value = inputLoginPin.value = ``;
     }
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = ``;
+    // Reset pointer and focus
+    inputLoginPin.blur();
 });
 
 // Transfer
@@ -153,6 +153,7 @@ btnClose.addEventListener(`click`, function (e) {
         const confirm = prompt(
             `You are about to close your account. Write YES to confirm, or NO to cancel.`
         );
+        // If closing account is confirmed
         if (confirm === `YES`) {
             // Finding closing account by input username
             const index = accounts.findIndex((acc) => acc.username === inputCloseUsername.value);
