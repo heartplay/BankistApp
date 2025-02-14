@@ -132,17 +132,43 @@ btnTransfer.addEventListener(`click`, function (e) {
         // Add new movements on both accounts
         currentAccount.movements.push(-amount);
         receiver.movements.push(amount);
-        // Clear input fields and reset pointer and focus
-
         // Display updated balance, movements and summary of current account
         updateUI(currentAccount);
     } else {
         // -------------------------------------------------------------------- Добавить уведомления для различных причин невыполнения операции
         alert(`Invalid operation!`);
     }
+    // Clear input fields and reset pointer and focus
     inputTransferTo.value = inputTransferAmount.value = ``;
-    inputTransferTo.blur();
     inputTransferAmount.blur();
+});
+
+// Close account
+btnClose.addEventListener(`click`, function (e) {
+    // Prevent form from submitting and reload page
+    e.preventDefault();
+    // Checking the account being closed is current account
+    if (
+        inputCloseUsername.value === currentAccount.username &&
+        Number(inputClosePin.value) === currentAccount.pin
+    ) {
+        // Confirm closing account
+        const confirm = prompt(
+            `You are about to close your account. Write YES to confirm, or NO to cancel.`
+        );
+        if (confirm === `YES`) {
+            // Finding closing account by input username
+            const index = accounts.findIndex((acc) => acc.username === inputCloseUsername.value);
+            // Delete closing account from accounts
+            accounts.splice(index, 1);
+            // Hiding UI and reset welcome message
+            labelWelcome.textContent = `Log in to get started`;
+            containerApp.style.opacity = 0;
+        }
+    }
+    // Clear input fields and reset pointer and focus
+    inputCloseUsername.value = inputClosePin.value = ``;
+    inputClosePin.blur();
 });
 
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
