@@ -128,10 +128,10 @@ btnTransfer.addEventListener(`click`, function (e) {
         currentAccount.balance >= amount
     ) {
         // Valid transfer
-        // Add new movements on both accounts
+        // Add new transactions on both accounts
         currentAccount.movements.push(-amount);
         receiver.movements.push(amount);
-        // Display updated balance, movements and summary of current account
+        // Display updated balance, transactions and summary of current account
         updateUI(currentAccount);
     } else {
         // -------------------------------------------------------------------- Добавить уведомления для различных причин невыполнения операции
@@ -173,10 +173,32 @@ btnClose.addEventListener(`click`, function (e) {
 let sort = false;
 btnSort.addEventListener(`click`, function (e) {
     e.preventDefault();
-    // Sorting movements
+    // Sorting transactions
     displayMovements(currentAccount, !sort);
     // Toggle sort condition
     sort = !sort;
+});
+
+btnLoan.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    const amount = Number(inputLoanAmount.value);
+    // Checking posibility to get loan
+    if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
+        // Approving loan
+        alert(`The requested loan amount has been approved!`);
+        // Adding loan to transactions
+        currentAccount.movements.push(amount);
+        updateUI(currentAccount);
+    } else {
+        // Loan not approved
+        alert(
+            `Unfortunately, the requested loan amount cannot be approved. At least one deposit in your transaction history must be at least 10% of the requested loan amount. The maximum loan amount for you is ${
+                currentAccount.maxDeposit * 10
+            }€.`
+        );
+    }
+    inputLoanAmount.value = ``;
+    inputLoanAmount.blur();
 });
 
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
@@ -190,13 +212,13 @@ function createUsernames(accs) {
     });
 }
 
-// Function for display movement for account according to movement type
+// Function for display transaction for account according to movement type
 function displayMovements(acc, sort = false) {
-    // Clear movements container
+    // Clear transactions container
     containerMovements.innerHTML = ``;
-    // Sorting movements by ascendening according to sort condition
+    // Sorting transactions by ascendening according to sort condition
     const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
-    // Create div element for each movement according to type of movement and put it in movements container
+    // Create div element for each transaction according to type of movement and put it in transactions container
     movs.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
         const html = `
@@ -209,7 +231,7 @@ function displayMovements(acc, sort = false) {
     });
 }
 
-// Function for display balance for account according to movements
+// Function for display balance for account according to transactions
 function calcDisplayBalance(acc) {
     // Calculate balance
     acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
@@ -217,7 +239,7 @@ function calcDisplayBalance(acc) {
     labelBalance.textContent = `${acc.balance}€`;
 }
 
-// Function to calculate summary income, outcome and interest for account according to movements
+// Function to calculate summary income, outcome and interest for account according to transactions
 function calcDisplaySummary(acc) {
     // Calculate incomes
     const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0);
@@ -239,12 +261,22 @@ function calcDisplaySummary(acc) {
     labelSumInterest.textContent = `${interest}€`;
 }
 
+// Getting max deposite from transactions
+function getMaxDeposite(acc) {
+    acc.maxDeposit = acc.movements
+        .slice()
+        .sort((a, b) => a - b)
+        .splice(-1);
+}
+
 // Updating UI function
 function updateUI(acc) {
     // Calculate and display balance
     calcDisplayBalance(currentAccount);
-    // Display movements
+    // Display transactions
     displayMovements(currentAccount);
     // Calculate and display summary
     calcDisplaySummary(currentAccount);
+    // Getting max deposite
+    getMaxDeposite(currentAccount);
 }
