@@ -168,6 +168,17 @@ btnClose.addEventListener(`click`, function (e) {
     inputClosePin.blur();
 });
 
+// Sorting transactions
+// Disable sorting by default
+let sort = false;
+btnSort.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    // Sorting movements
+    displayMovements(currentAccount, !sort);
+    // Toggle sort condition
+    sort = !sort;
+});
+
 // Function to create username for account(username is first letters of each word of account.owner property in lower case)
 function createUsernames(accs) {
     accs.forEach((acc) => {
@@ -180,11 +191,13 @@ function createUsernames(accs) {
 }
 
 // Function for display movement for account according to movement type
-function displayMovements(acc) {
+function displayMovements(acc, sort = false) {
     // Clear movements container
     containerMovements.innerHTML = ``;
+    // Sorting movements by ascendening according to sort condition
+    const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
     // Create div element for each movement according to type of movement and put it in movements container
-    acc.movements.forEach((mov, i) => {
+    movs.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
         const html = `
         <div class="movements__row">
