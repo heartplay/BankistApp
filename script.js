@@ -116,7 +116,6 @@ btnLogin.addEventListener(`click`, function (e) {
 
 // Transfer
 btnTransfer.addEventListener(`click`, function (e) {
-    // Prevent form from submitting and reload page
     e.preventDefault();
     // Finding account of receiver
     const receiver = accounts.find((acc) => acc.username === inputTransferTo.value);
@@ -138,14 +137,12 @@ btnTransfer.addEventListener(`click`, function (e) {
         // -------------------------------------------------------------------- Добавить уведомления для различных причин невыполнения операции
         alert(`Invalid operation!`);
     }
-    // Clear input fields and reset pointer and focus
     inputTransferTo.value = inputTransferAmount.value = ``;
     inputTransferAmount.blur();
 });
 
 // Close account
 btnClose.addEventListener(`click`, function (e) {
-    // Prevent form from submitting and reload page
     e.preventDefault();
     // Checking the account being closed is current account
     if (
@@ -166,7 +163,6 @@ btnClose.addEventListener(`click`, function (e) {
             containerApp.style.opacity = 0;
         }
     }
-    // Clear input fields and reset pointer and focus
     inputCloseUsername.value = inputClosePin.value = ``;
     inputClosePin.blur();
 });
