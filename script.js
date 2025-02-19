@@ -96,7 +96,7 @@ btnLogin.addEventListener(`click`, function (e) {
     // Finding account according to username input
     currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
     // Checking login and pin
-    if (currentAccount?.username && currentAccount?.pin === Number(inputLoginPin.value)) {
+    if (currentAccount?.username && currentAccount?.pin === +inputLoginPin.value) {
         // ------------------------------------------------------------------------------------------------ Исправить логику
         // If login and pin is correct
         // Display UI and welcome message
@@ -119,14 +119,9 @@ btnTransfer.addEventListener(`click`, function (e) {
     e.preventDefault();
     // Finding account of receiver
     const receiver = accounts.find((acc) => acc.username === inputTransferTo.value);
-    const amount = Number(inputTransferAmount.value);
+    const amount = +inputTransferAmount.value;
     // Checking receiver account is exist, sender account is not receiver account, positive sum to transfer and amount did not exceed balance
-    if (
-        receiver &&
-        receiver.username !== currentAccount.username &&
-        amount > 0 &&
-        currentAccount.balance >= amount
-    ) {
+    if (receiver && receiver.username !== currentAccount.username && amount > 0 && currentAccount.balance >= amount) {
         // Valid transfer
         // Add new transactions on both accounts
         currentAccount.movements.push(-amount);
@@ -145,14 +140,9 @@ btnTransfer.addEventListener(`click`, function (e) {
 btnClose.addEventListener(`click`, function (e) {
     e.preventDefault();
     // Checking the account being closed is current account
-    if (
-        inputCloseUsername.value === currentAccount.username &&
-        Number(inputClosePin.value) === currentAccount.pin
-    ) {
+    if (inputCloseUsername.value === currentAccount.username && +inputClosePin.value === currentAccount.pin) {
         // Confirm closing account
-        const confirm = prompt(
-            `You are about to close your account. Write YES to confirm, or NO to cancel.`
-        );
+        const confirm = prompt(`You are about to close your account. Write YES to confirm, or NO to cancel.`);
         // If closing account is confirmed
         if (confirm === `YES`) {
             // Finding closing account by input username
@@ -181,7 +171,7 @@ btnSort.addEventListener(`click`, function (e) {
 
 btnLoan.addEventListener(`click`, function (e) {
     e.preventDefault();
-    const amount = Number(inputLoanAmount.value);
+    const amount = Math.floor(inputLoanAmount.value);
     // Checking posibility to get loan
     if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
         // Approving loan
@@ -224,7 +214,7 @@ function displayMovements(acc, sort = false) {
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__value">${mov}€</div>
+          <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>
     `;
         containerMovements.insertAdjacentHTML(`afterbegin`, html);
@@ -236,7 +226,7 @@ function calcDisplayBalance(acc) {
     // Calculate balance
     acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
     // Display balance
-    labelBalance.textContent = `${acc.balance}€`;
+    labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
 }
 
 // Function to calculate summary income, outcome and interest for account according to transactions
@@ -244,9 +234,7 @@ function calcDisplaySummary(acc) {
     // Calculate incomes
     const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0);
     // Calculate outcomes
-    const outcomes = Math.abs(
-        acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome, 0)
-    );
+    const outcomes = Math.abs(acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome, 0));
     // Calculate interest
     const interest = acc.movements
         .filter((mov) => mov > 0)
@@ -256,9 +244,9 @@ function calcDisplaySummary(acc) {
         .reduce((acc, interest) => acc + interest, 0);
 
     // Display income, outcome and interest
-    labelSumIn.textContent = `${incomes}€`;
-    labelSumOut.textContent = `${outcomes}€`;
-    labelSumInterest.textContent = `${interest}€`;
+    labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+    labelSumOut.textContent = `${outcomes.toFixed(2)}€`;
+    labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 }
 
 // Getting max deposite from transactions
