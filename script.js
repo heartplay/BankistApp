@@ -227,8 +227,8 @@ btnTransfer.addEventListener(`click`, function (e) {
         currentAccount.movements.push(-amount);
         receiver.movements.push(amount);
         // Add transfer time
-        currentAccount.movementsDates.push(new Date());
-        receiver.movementsDates.push(new Date());
+        currentAccount.movementsDates.push(new Date().toISOString());
+        receiver.movementsDates.push(new Date().toISOString());
         // Display updated balance, transactions and summary of current account
         updateUI(currentAccount);
     } else {
@@ -282,7 +282,7 @@ btnLoan.addEventListener(`click`, function (e) {
         // Adding loan to transactions
         currentAccount.movements.push(amount);
         // Add loan time
-        currentAccount.movementsDates.push(new Date());
+        currentAccount.movementsDates.push(new Date().toISOString());
 
         updateUI(currentAccount);
     } else {
