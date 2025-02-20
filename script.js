@@ -6,6 +6,16 @@ const account1 = {
     movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
     interestRate: 1.2, // %
     pin: 1111,
+    movementsDates: [
+        '2019-11-18T21:31:17.178Z',
+        '2019-12-23T07:42:02.383Z',
+        '2020-01-28T09:15:04.904Z',
+        '2020-04-01T10:17:24.185Z',
+        '2020-05-08T14:11:59.604Z',
+        '2020-05-27T17:01:17.194Z',
+        '2020-07-11T23:36:17.929Z',
+        '2020-07-12T10:51:36.790Z',
+    ],
 };
 
 const account2 = {
@@ -13,6 +23,16 @@ const account2 = {
     movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
     interestRate: 1.5,
     pin: 2222,
+    movementsDates: [
+        '2019-11-01T13:15:33.035Z',
+        '2019-11-30T09:48:16.867Z',
+        '2019-12-25T06:04:23.907Z',
+        '2020-01-25T14:18:46.235Z',
+        '2020-02-05T16:33:06.386Z',
+        '2020-04-10T14:43:26.374Z',
+        '2020-06-25T18:49:59.371Z',
+        '2020-07-26T12:01:20.894Z',
+    ],
 };
 
 const account3 = {
@@ -20,6 +40,16 @@ const account3 = {
     movements: [200, -200, 340, -300, -20, 50, 400, -460],
     interestRate: 0.7,
     pin: 3333,
+    movementsDates: [
+        '2019-11-18T21:31:17.178Z',
+        '2019-12-23T07:42:02.383Z',
+        '2020-01-28T09:15:04.904Z',
+        '2020-04-01T10:17:24.185Z',
+        '2020-05-08T14:11:59.604Z',
+        '2020-05-27T17:01:17.194Z',
+        '2020-07-11T23:36:17.929Z',
+        '2020-07-12T10:51:36.790Z',
+    ],
 };
 
 const account4 = {
@@ -27,13 +57,33 @@ const account4 = {
     movements: [430, 1000, 700, 50, 90],
     interestRate: 1,
     pin: 4444,
+    movementsDates: [
+        '2019-11-01T13:15:33.035Z',
+        '2019-11-30T09:48:16.867Z',
+        '2019-12-25T06:04:23.907Z',
+        '2020-01-25T14:18:46.235Z',
+        '2020-02-05T16:33:06.386Z',
+        '2020-04-10T14:43:26.374Z',
+        '2020-06-25T18:49:59.371Z',
+        '2020-07-26T12:01:20.894Z',
+    ],
 };
 
 const account5 = {
     owner: "Il'ya Emel'yanov",
     movements: [15000, 10000, -7000, 502, 905, -1250],
     interestRate: 2,
-    pin: 1488,
+    pin: 1414,
+    movementsDates: [
+        '2019-11-18T21:31:17.178Z',
+        '2019-12-23T07:42:02.383Z',
+        '2020-01-28T09:15:04.904Z',
+        '2020-04-01T10:17:24.185Z',
+        '2020-05-08T14:11:59.604Z',
+        '2020-05-27T17:01:17.194Z',
+        '2020-07-11T23:36:17.929Z',
+        '2020-07-12T10:51:36.790Z',
+    ],
 };
 
 const account6 = {
@@ -41,6 +91,16 @@ const account6 = {
     movements: [1000, 9520, 1000, -5267, -55, -1250],
     interestRate: 1.7,
     pin: 5555,
+    movementsDates: [
+        '2019-11-01T13:15:33.035Z',
+        '2019-11-30T09:48:16.867Z',
+        '2019-12-25T06:04:23.907Z',
+        '2020-01-25T14:18:46.235Z',
+        '2020-02-05T16:33:06.386Z',
+        '2020-04-10T14:43:26.374Z',
+        '2020-06-25T18:49:59.371Z',
+        '2020-07-26T12:01:20.894Z',
+    ],
 };
 
 const account7 = {
@@ -48,6 +108,16 @@ const account7 = {
     movements: [200000, 200000, -36, -1234, 200000],
     interestRate: 2,
     pin: 6666,
+    movementsDates: [
+        '2019-11-18T21:31:17.178Z',
+        '2019-12-23T07:42:02.383Z',
+        '2020-01-28T09:15:04.904Z',
+        '2020-04-01T10:17:24.185Z',
+        '2020-05-08T14:11:59.604Z',
+        '2020-05-27T17:01:17.194Z',
+        '2020-07-11T23:36:17.929Z',
+        '2020-07-12T10:51:36.790Z',
+    ],
 };
 
 const account8 = {
@@ -55,6 +125,16 @@ const account8 = {
     movements: [200, -179],
     interestRate: 0,
     pin: 1337,
+    movementsDates: [
+        '2019-11-01T13:15:33.035Z',
+        '2019-11-30T09:48:16.867Z',
+        '2019-12-25T06:04:23.907Z',
+        '2020-01-25T14:18:46.235Z',
+        '2020-02-05T16:33:06.386Z',
+        '2020-04-10T14:43:26.374Z',
+        '2020-06-25T18:49:59.371Z',
+        '2020-07-26T12:01:20.894Z',
+    ],
 };
 
 const accounts = [account1, account2, account3, account4, account5, account6, account7, account8];
@@ -102,6 +182,12 @@ btnLogin.addEventListener(`click`, function (e) {
         // Display UI and welcome message
         labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(` `).at(0)}!`;
         containerApp.style.opacity = 100;
+        // Display loggin time
+        const logTime = new Date();
+        labelDate.textContent = `${getDateStr(logTime.getDate())}/${getDateStr(logTime.getMonth() + 1)}/${getDateStr(
+            logTime.getFullYear()
+        )}, ${getDateStr(logTime.getHours())}:${getDateStr(logTime.getMinutes())}`;
+        // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
         // If login and pin is incorrect
@@ -126,6 +212,9 @@ btnTransfer.addEventListener(`click`, function (e) {
         // Add new transactions on both accounts
         currentAccount.movements.push(-amount);
         receiver.movements.push(amount);
+        // Add transfer time
+        currentAccount.movementsDates.push(new Date());
+        receiver.movementsDates.push(new Date());
         // Display updated balance, transactions and summary of current account
         updateUI(currentAccount);
     } else {
@@ -178,6 +267,9 @@ btnLoan.addEventListener(`click`, function (e) {
         alert(`The requested loan amount has been approved!`);
         // Adding loan to transactions
         currentAccount.movements.push(amount);
+        // Add loan time
+        currentAccount.movementsDates.push(new Date());
+
         updateUI(currentAccount);
     } else {
         // Loan not approved
@@ -208,12 +300,16 @@ function displayMovements(acc, sort = false) {
     containerMovements.innerHTML = ``;
     // Sorting transactions by ascendening according to sort condition
     const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
-    // Create div element for each transaction according to type of movement and put it in transactions container
+    // Create div element for each transaction according to type of movement and movement date and put it in transactions container
     movs.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
+        const movDate = new Date(acc.movementsDates[i]);
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
+          <div class="movements__date">${getDateStr(movDate.getDate())}/${getDateStr(
+            movDate.getMonth() + 1
+        )}/${getDateStr(movDate.getFullYear())}</div>
           <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>
     `;
