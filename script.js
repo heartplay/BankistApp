@@ -184,9 +184,9 @@ btnLogin.addEventListener(`click`, function (e) {
         containerApp.style.opacity = 100;
         // Display loggin time
         const logTime = new Date();
-        labelDate.textContent = `${getDateStr(logTime.getDate())}/${getDateStr(logTime.getMonth() + 1)}/${getDateStr(
-            logTime.getFullYear()
-        )}, ${getDateStr(logTime.getHours())}:${getDateStr(logTime.getMinutes())}`;
+        labelDate.textContent = `${getFormattedDate(logTime)}, ${getDateStr(logTime.getHours())}:${getDateStr(
+            logTime.getMinutes()
+        )}`;
         // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
@@ -303,13 +303,11 @@ function displayMovements(acc, sort = false) {
     // Create div element for each transaction according to type of movement and movement date and put it in transactions container
     movs.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
-        const movDate = new Date(acc.movementsDates[i]);
+        const movDate = getFormattedDate(new Date(acc.movementsDates[i]));
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__date">${getDateStr(movDate.getDate())}/${getDateStr(
-            movDate.getMonth() + 1
-        )}/${getDateStr(movDate.getFullYear())}</div>
+          <div class="movements__date">${movDate}</div>
           <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>
     `;
@@ -368,4 +366,12 @@ function updateUI(acc) {
 // Getting formatted date string for year, month and etc.
 function getDateStr(date) {
     return `${date}`.padStart(2, `0`);
+}
+
+// Getting day/month/year string
+function getFormattedDate(date) {
+    const day = getDateStr(date.getDate());
+    const month = getDateStr(date.getMonth() + 1);
+    const year = getDateStr(date.getFullYear());
+    return `${day}/${month}/${year}`;
 }
