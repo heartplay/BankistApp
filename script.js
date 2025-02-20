@@ -16,6 +16,7 @@ const account1 = {
         '2025-02-19T23:36:17.929Z',
         '2025-02-19T10:51:36.790Z',
     ],
+    locale: 'pt-PT',
 };
 
 const account2 = {
@@ -33,6 +34,7 @@ const account2 = {
         '2025-02-17T18:49:59.371Z',
         '2025-02-19T12:01:20.894Z',
     ],
+    locale: 'en-US',
 };
 
 const account3 = {
@@ -67,6 +69,7 @@ const account4 = {
         '2025-02-17T18:49:59.371Z',
         '2025-02-19T12:01:20.894Z',
     ],
+    locale: `en-GB`,
 };
 
 const account5 = {
@@ -84,6 +87,7 @@ const account5 = {
         '2025-02-19T23:36:17.929Z',
         '2025-02-19T10:51:36.790Z',
     ],
+    locale: `ru-RU`,
 };
 
 const account6 = {
@@ -101,6 +105,7 @@ const account6 = {
         '2025-02-17T18:49:59.371Z',
         '2025-02-19T12:01:20.894Z',
     ],
+    locale: `kk-KZ`,
 };
 
 const account7 = {
@@ -118,6 +123,7 @@ const account7 = {
         '2025-02-19T23:36:17.929Z',
         '2025-02-19T10:51:36.790Z',
     ],
+    locale: `ja-JP`,
 };
 
 const account8 = {
@@ -135,6 +141,7 @@ const account8 = {
         '2025-02-17T18:49:59.371Z',
         '2025-02-19T12:01:20.894Z',
     ],
+    locale: `ru-RU`,
 };
 
 const accounts = [account1, account2, account3, account4, account5, account6, account7, account8];
