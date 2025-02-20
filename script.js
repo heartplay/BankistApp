@@ -268,3 +268,8 @@ function updateUI(acc) {
     // Getting max deposite
     getMaxDeposite(currentAccount);
 }
+
+// Getting formatted date string for year, month and etc.
+function getDateStr(date) {
+    return `${date}`.padStart(2, `0`);
+}
