@@ -11,10 +11,10 @@ const account1 = {
         '2019-12-23T07:42:02.383Z',
         '2020-01-28T09:15:04.904Z',
         '2020-04-01T10:17:24.185Z',
-        '2020-05-08T14:11:59.604Z',
-        '2020-05-27T17:01:17.194Z',
-        '2020-07-11T23:36:17.929Z',
-        '2020-07-12T10:51:36.790Z',
+        '2025-02-15T14:11:59.604Z',
+        '2025-02-18T17:01:17.194Z',
+        '2025-02-19T23:36:17.929Z',
+        '2025-02-19T10:51:36.790Z',
     ],
 };
 
@@ -30,8 +30,8 @@ const account2 = {
         '2020-01-25T14:18:46.235Z',
         '2020-02-05T16:33:06.386Z',
         '2020-04-10T14:43:26.374Z',
-        '2020-06-25T18:49:59.371Z',
-        '2020-07-26T12:01:20.894Z',
+        '2025-02-17T18:49:59.371Z',
+        '2025-02-19T12:01:20.894Z',
     ],
 };
 
@@ -45,10 +45,10 @@ const account3 = {
         '2019-12-23T07:42:02.383Z',
         '2020-01-28T09:15:04.904Z',
         '2020-04-01T10:17:24.185Z',
-        '2020-05-08T14:11:59.604Z',
-        '2020-05-27T17:01:17.194Z',
-        '2020-07-11T23:36:17.929Z',
-        '2020-07-12T10:51:36.790Z',
+        '2025-02-15T14:11:59.604Z',
+        '2025-02-18T17:01:17.194Z',
+        '2025-02-19T23:36:17.929Z',
+        '2025-02-19T10:51:36.790Z',
     ],
 };
 
@@ -64,8 +64,8 @@ const account4 = {
         '2020-01-25T14:18:46.235Z',
         '2020-02-05T16:33:06.386Z',
         '2020-04-10T14:43:26.374Z',
-        '2020-06-25T18:49:59.371Z',
-        '2020-07-26T12:01:20.894Z',
+        '2025-02-17T18:49:59.371Z',
+        '2025-02-19T12:01:20.894Z',
     ],
 };
 
@@ -79,10 +79,10 @@ const account5 = {
         '2019-12-23T07:42:02.383Z',
         '2020-01-28T09:15:04.904Z',
         '2020-04-01T10:17:24.185Z',
-        '2020-05-08T14:11:59.604Z',
-        '2020-05-27T17:01:17.194Z',
-        '2020-07-11T23:36:17.929Z',
-        '2020-07-12T10:51:36.790Z',
+        '2025-02-15T14:11:59.604Z',
+        '2025-02-18T17:01:17.194Z',
+        '2025-02-19T23:36:17.929Z',
+        '2025-02-19T10:51:36.790Z',
     ],
 };
 
@@ -98,8 +98,8 @@ const account6 = {
         '2020-01-25T14:18:46.235Z',
         '2020-02-05T16:33:06.386Z',
         '2020-04-10T14:43:26.374Z',
-        '2020-06-25T18:49:59.371Z',
-        '2020-07-26T12:01:20.894Z',
+        '2025-02-17T18:49:59.371Z',
+        '2025-02-19T12:01:20.894Z',
     ],
 };
 
@@ -113,10 +113,10 @@ const account7 = {
         '2019-12-23T07:42:02.383Z',
         '2020-01-28T09:15:04.904Z',
         '2020-04-01T10:17:24.185Z',
-        '2020-05-08T14:11:59.604Z',
-        '2020-05-27T17:01:17.194Z',
-        '2020-07-11T23:36:17.929Z',
-        '2020-07-12T10:51:36.790Z',
+        '2025-02-15T14:11:59.604Z',
+        '2025-02-18T17:01:17.194Z',
+        '2025-02-19T23:36:17.929Z',
+        '2025-02-19T10:51:36.790Z',
     ],
 };
 
@@ -132,8 +132,8 @@ const account8 = {
         '2020-01-25T14:18:46.235Z',
         '2020-02-05T16:33:06.386Z',
         '2020-04-10T14:43:26.374Z',
-        '2020-06-25T18:49:59.371Z',
-        '2020-07-26T12:01:20.894Z',
+        '2025-02-17T18:49:59.371Z',
+        '2025-02-19T12:01:20.894Z',
     ],
 };
 
@@ -184,9 +184,9 @@ btnLogin.addEventListener(`click`, function (e) {
         containerApp.style.opacity = 100;
         // Display loggin time
         const logTime = new Date();
-        labelDate.textContent = `${getFormattedDate(logTime)}, ${getDateStr(logTime.getHours())}:${getDateStr(
-            logTime.getMinutes()
-        )}`;
+        labelDate.textContent = `${getDateStr(logTime.getDate())}/${getDateStr(logTime.getMonth() + 1)}/${getDateStr(
+            logTime.getFullYear()
+        )}, ${getDateStr(logTime.getHours())}:${getDateStr(logTime.getMinutes())}`;
         // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
@@ -368,8 +368,19 @@ function getDateStr(date) {
     return `${date}`.padStart(2, `0`);
 }
 
-// Getting day/month/year string
+// Getting passed days between 2 dates
+function calcDaysPassed(date1, date2) {
+    return Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+}
+
+// Getting today/yesterday or day/month/year string for movements date according to passed days from date of movement
 function getFormattedDate(date) {
+    const daysPassed = calcDaysPassed(new Date(), date);
+
+    if (daysPassed == 0) return `Today`;
+    if (daysPassed == 1) return `Yesterday`;
+    if (daysPassed <= 7) return `${daysPassed} days ago`;
+
     const day = getDateStr(date.getDate());
     const month = getDateStr(date.getMonth() + 1);
     const year = getDateStr(date.getFullYear());
