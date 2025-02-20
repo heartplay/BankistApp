@@ -175,6 +175,15 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // Create usernames for all existing accounts
 createUsernames(accounts);
 
+// Options for data format
+const dateOptions = {
+    hour: `numeric`,
+    minute: `numeric`,
+    day: `numeric`,
+    month: `numeric`,
+    year: `numeric`,
+};
+
 // Log in to account
 let currentAccount;
 btnLogin.addEventListener(`click`, function (e) {
@@ -189,11 +198,9 @@ btnLogin.addEventListener(`click`, function (e) {
         // Display UI and welcome message
         labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(` `).at(0)}!`;
         containerApp.style.opacity = 100;
-        // Display loggin time
+        // Display loggin time according to account locale
         const logTime = new Date();
-        labelDate.textContent = `${getDateStr(logTime.getDate())}/${getDateStr(logTime.getMonth() + 1)}/${getDateStr(
-            logTime.getFullYear()
-        )}, ${getDateStr(logTime.getHours())}:${getDateStr(logTime.getMinutes())}`;
+        labelDate.textContent = Intl.DateTimeFormat(currentAccount.locale, dateOptions).format(logTime);
         // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
@@ -310,7 +317,7 @@ function displayMovements(acc, sort = false) {
     // Create div element for each transaction according to type of movement and movement date and put it in transactions container
     movs.forEach((mov, i) => {
         const type = mov > 0 ? `deposit` : `withdrawal`;
-        const movDate = getFormattedDate(new Date(acc.movementsDates[i]));
+        const movDate = getFormattedDate(new Date(acc.movementsDates[i]), acc.locale);
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
@@ -380,16 +387,13 @@ function calcDaysPassed(date1, date2) {
     return Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 }
 
-// Getting today/yesterday or day/month/year string for movements date according to passed days from date of movement
-function getFormattedDate(date) {
+// Getting today/yesterday or day/month/year string for movements date according account to locale and passed days from date of movement
+function getFormattedDate(date, locale) {
     const daysPassed = calcDaysPassed(new Date(), date);
 
     if (daysPassed == 0) return `Today`;
     if (daysPassed == 1) return `Yesterday`;
     if (daysPassed <= 7) return `${daysPassed} days ago`;
 
-    const day = getDateStr(date.getDate());
-    const month = getDateStr(date.getMonth() + 1);
-    const year = getDateStr(date.getFullYear());
-    return `${day}/${month}/${year}`;
+    return Intl.DateTimeFormat(locale).format(date);
 }
