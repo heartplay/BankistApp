@@ -210,6 +210,8 @@ btnLogin.addEventListener(`click`, function (e) {
         // Display loggin time according to account locale
         const logTime = new Date();
         labelDate.textContent = Intl.DateTimeFormat(currentAccount.locale, dateOptions).format(logTime);
+        // Set sort to default
+        sort = false;
         // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
@@ -331,7 +333,7 @@ function displayMovements(acc, sort = false) {
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
           <div class="movements__date">${movDate}</div>
-          <div class="movements__value">${mov.toFixed(2)}€</div>
+          <div class="movements__value">${formatCurrency(mov, acc.locale, acc.currency)}</div>
         </div>
     `;
         containerMovements.insertAdjacentHTML(`afterbegin`, html);
@@ -343,7 +345,7 @@ function calcDisplayBalance(acc) {
     // Calculate balance
     acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
     // Display balance
-    labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+    labelBalance.textContent = `${formatCurrency(acc.balance, acc.locale, acc.currency)}`;
 }
 
 // Function to calculate summary income, outcome and interest for account according to transactions
@@ -361,9 +363,9 @@ function calcDisplaySummary(acc) {
         .reduce((acc, interest) => acc + interest, 0);
 
     // Display income, outcome and interest
-    labelSumIn.textContent = `${incomes.toFixed(2)}€`;
-    labelSumOut.textContent = `${outcomes.toFixed(2)}€`;
-    labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+    labelSumIn.textContent = `${formatCurrency(incomes, acc.locale, acc.currency)}`;
+    labelSumOut.textContent = `${formatCurrency(outcomes, acc.locale, acc.currency)}`;
+    labelSumInterest.textContent = `${formatCurrency(interest, acc.locale, acc.currency)}`;
 }
 
 // Getting max deposite from transactions
