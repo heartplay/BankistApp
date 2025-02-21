@@ -406,3 +406,11 @@ function getFormattedDate(date, locale) {
 
     return Intl.DateTimeFormat(locale).format(date);
 }
+
+// Getting formatted string for currency according to currency type and locale of account
+function formatCurrency(value, locale, currency) {
+    return new Intl.NumberFormat(locale, {
+        style: `currency`,
+        currency: currency,
+    }).format(value);
+}
