@@ -304,6 +304,18 @@ function createUsernames(accs) {
     });
 }
 
+// Function to create new property for all accounts which contain all movements with attached date and delete non-usable movements and movementsDates
+function createTransactions(accs) {
+    accs.forEach((acc) => {
+        acc.transactions = Array.from({ length: acc.movements.length }, (_, i) => [
+            acc.movements[i],
+            acc.movementsDates[i],
+        ]);
+        delete acc.movements;
+        delete acc.movementsDates;
+    });
+}
+
 // Function for display transaction for account according to movement type
 function displayMovements(acc, sort = false) {
     // Clear transactions container
