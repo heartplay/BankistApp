@@ -217,14 +217,12 @@ btnTransfer.addEventListener(`click`, function (e) {
     const receiver = accounts.find((acc) => acc.username === inputTransferTo.value);
     const amount = +inputTransferAmount.value;
     // Checking receiver account is exist, sender account is not receiver account, positive sum to transfer and amount did not exceed balance
-    if (receiver && receiver.username !== currentAccount.username && amount > 0 && currentAccount.balance >= amount) {
+    // (receiver && receiver.username !== currentAccount.username && amount > 0 && currentAccount.balance >= amount)
+    if (receiver?.username !== currentAccount.username && amount > 0 && currentAccount.balance >= amount) {
         // Valid transfer
-        // Add new transactions on both accounts
-        currentAccount.movements.push(-amount);
-        receiver.movements.push(amount);
-        // Add transfer time
-        currentAccount.movementsDates.push(new Date().toISOString());
-        receiver.movementsDates.push(new Date().toISOString());
+        // Add new transactions and time of transactions on both accounts
+        currentAccount.transactions.push([-amount, new Date().toISOString()]);
+        receiver.transactions.push([amount, new Date().toISOString()]);
         // Display updated balance, transactions and summary of current account
         updateUI(currentAccount);
     } else {
@@ -275,11 +273,8 @@ btnLoan.addEventListener(`click`, function (e) {
     if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
         // Approving loan
         alert(`The requested loan amount has been approved!`);
-        // Adding loan to transactions
-        currentAccount.movements.push(amount);
-        // Add loan time
-        currentAccount.movementsDates.push(new Date().toISOString());
-
+        // Adding loan and time of loan to transactions
+        currentAccount.transactions.push([amount, new Date().toISOString()]);
         updateUI(currentAccount);
     } else {
         // Loan not approved
@@ -321,11 +316,11 @@ function displayMovements(acc, sort = false) {
     // Clear transactions container
     containerMovements.innerHTML = ``;
     // Sorting transactions by ascendening according to sort condition
-    const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
+    const movs = sort ? acc.transactions.slice().sort((a, b) => a[0] - b[0]) : acc.transactions;
     // Create div element for each transaction according to type of movement and movement date and put it in transactions container
     movs.forEach((mov, i) => {
-        const type = mov > 0 ? `deposit` : `withdrawal`;
-        const movDate = getFormattedDate(new Date(acc.movementsDates[i]), acc.locale);
+        const type = mov[0] > 0 ? `deposit` : `withdrawal`;
+        const movDate = getFormattedDate(new Date(movs[i][1]), acc.locale);
         const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
@@ -340,7 +335,7 @@ function displayMovements(acc, sort = false) {
 // Function for display balance for account according to transactions
 function calcDisplayBalance(acc) {
     // Calculate balance
-    acc.balance = acc.movements.reduce((acc, mov) => acc + mov);
+    acc.balance = acc.transactions.reduce((acc, mov) => acc + mov[0], 0);
     // Display balance
     labelBalance.textContent = `${formatCurrency(acc.balance, acc.locale, acc.currency)}`;
 }
@@ -348,13 +343,15 @@ function calcDisplayBalance(acc) {
 // Function to calculate summary income, outcome and interest for account according to transactions
 function calcDisplaySummary(acc) {
     // Calculate incomes
-    const incomes = acc.movements.filter((mov) => mov > 0).reduce((acc, income) => acc + income, 0);
+    const incomes = acc.transactions.filter((mov) => mov[0] > 0).reduce((acc, income) => acc + income[0], 0);
     // Calculate outcomes
-    const outcomes = Math.abs(acc.movements.filter((mov) => mov < 0).reduce((acc, outcome) => acc + outcome, 0));
+    const outcomes = Math.abs(
+        acc.transactions.filter((mov) => mov[0] < 0).reduce((acc, outcome) => acc + outcome[0], 0)
+    );
     // Calculate interest
-    const interest = acc.movements
-        .filter((mov) => mov > 0)
-        .map((deposit) => (deposit * acc.interestRate) / 100)
+    const interest = acc.transactions
+        .filter((mov) => mov[0] > 0)
+        .map((deposit) => (deposit[0] * acc.interestRate) / 100)
         // Condition for getting interest
         .filter((deposit) => deposit >= 1)
         .reduce((acc, interest) => acc + interest, 0);
@@ -367,10 +364,11 @@ function calcDisplaySummary(acc) {
 
 // Getting max deposite from transactions
 function getMaxDeposite(acc) {
-    acc.maxDeposit = acc.movements
+    acc.maxDeposit = acc.transactions
         .slice()
-        .sort((a, b) => a - b)
-        .splice(-1);
+        .sort((a, b) => a[0] - b[0])
+        .splice(-1)
+        .map((e) => e[0]);
 }
 
 // Updating UI function
