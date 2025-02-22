@@ -169,6 +169,9 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // Create usernames for all existing accounts
 createUsernames(accounts);
 
+// Create transactions for all accounts
+createTransactions(accounts);
+
 // Options for data format
 const dateOptions = {
     hour: `numeric`,
