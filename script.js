@@ -183,9 +183,11 @@ btnLogin.addEventListener(`click`, function (e) {
     // Prevent form from submitting and reload page
     e.preventDefault();
     // Finding account according to username input
-    currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
+    currentAccount = accounts.find(
+        (acc) => acc.pin === +inputLoginPin.value && acc.username === inputLoginUsername.value
+    );
     // Checking login and pin
-    if (currentAccount?.username && currentAccount?.pin === +inputLoginPin.value) {
+    if (currentAccount) {
         // ------------------------------------------------------------------------------------------------ Исправить логику
         // If login and pin is correct
         // Display UI and welcome message
