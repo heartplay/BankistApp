@@ -271,12 +271,14 @@ btnLoan.addEventListener(`click`, function (e) {
     e.preventDefault();
     const amount = Math.floor(inputLoanAmount.value);
     // Checking posibility to get loan
-    if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
-        // Approving loan
-        alert(`The requested loan amount has been approved!`);
-        // Adding loan and time of loan to transactions
-        currentAccount.transactions.push([amount, new Date().toISOString()]);
-        updateUI(currentAccount);
+    if (amount > 0 && currentAccount.transactions.some((mov) => mov[0] >= amount * 0.1)) {
+        setTimeout(function () {
+            // Approving loan
+            alert(`The requested loan amount has been approved!`);
+            // Adding loan and time of loan to transactions
+            currentAccount.transactions.push([amount, new Date().toISOString()]);
+            updateUI(currentAccount);
+        }, 3000);
     } else {
         // Loan not approved
         alert(
