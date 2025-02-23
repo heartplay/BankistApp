@@ -178,7 +178,7 @@ const dateOptions = {
 };
 
 // Log in to account
-let currentAccount;
+let currentAccount, timer;
 btnLogin.addEventListener(`click`, function (e) {
     // Prevent form from submitting and reload page
     e.preventDefault();
@@ -198,6 +198,9 @@ btnLogin.addEventListener(`click`, function (e) {
         labelDate.textContent = Intl.DateTimeFormat(currentAccount.locale, dateOptions).format(logTime);
         // Set sort to default
         sort = false;
+        // Set timer to log out
+        if (timer) clearInterval(timer);
+        timer = startLogOutTimer();
         // Display balance, movements and etc.
         updateUI(currentAccount);
     } else {
@@ -224,6 +227,9 @@ btnTransfer.addEventListener(`click`, function (e) {
         // Add new transactions and time of transactions on both accounts
         currentAccount.transactions.push([-amount, new Date().toISOString()]);
         receiver.transactions.push([amount, new Date().toISOString()]);
+        // Reset log out timer
+        clearInterval(timer);
+        timer = startLogOutTimer();
         // Display updated balance, transactions and summary of current account
         updateUI(currentAccount);
     } else {
@@ -279,6 +285,9 @@ btnLoan.addEventListener(`click`, function (e) {
             currentAccount.transactions.push([amount, new Date().toISOString()]);
             updateUI(currentAccount);
         }, 3000);
+        // Reset log out timer
+        clearInterval(timer);
+        timer = startLogOutTimer();
     } else {
         // Loan not approved
         alert(
@@ -413,4 +422,27 @@ function formatCurrency(value, locale, currency) {
         style: `currency`,
         currency: currency,
     }).format(value);
+}
+
+// Tick timer
+function startLogOutTimer() {
+    const tick = function () {
+        const min = String(Math.trunc(time / 60)).padStart(2, 0);
+        const sec = String(time % 60).padStart(2, 0);
+        // Display timer
+        labelTimer.textContent = `${min}:${sec}`;
+        if (!time) {
+            // Timer is reaching 0 -> log out
+            clearInterval(timer);
+            currentAccount = null;
+            labelWelcome.textContent = `Log in to get started`;
+            containerApp.style.opacity = 0;
+        }
+        time--;
+    };
+    // Set log out timer
+    let time = 300;
+    tick();
+    const timer = setInterval(tick, 1000);
+    return timer;
 }
